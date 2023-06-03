@@ -49,7 +49,6 @@ export const useElevator = () => {
       console.log("selectFloor", floorLabel, isOn);
 
       if (floorLabel === currentFloor && isOn) {
-        debugger;
         return;
       }
 

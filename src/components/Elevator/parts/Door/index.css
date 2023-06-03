@@ -1,0 +1,86 @@
+.Door {
+  width: 400px;
+  height: 800px;
+  display: flex;
+  overflow: hidden;
+  border: 8px solid #ccc;
+  border-radius: 8px;
+}
+
+.Door-left {
+  width: 50%;
+  height: 100%;
+  background-color: blue;
+  border: 1px solid #ccc;
+}
+
+.Door-right {
+  width: 50%;
+  height: 100%;
+  background-color: blue;
+  border: 1px solid #ccc;
+}
+
+.Door-open > .Door-right {
+  animation: none 0.7s ease-out;
+  animation-name: openRight;
+  transform: translateX(100%);
+}
+
+.Door-open > .Door-left {
+  animation: none 0.7s ease-out;
+  animation-name: openLeft;
+  transform: translateX(-100%);
+}
+
+.Door-close > .Door-right {
+  animation: none 0.9s ease-out;
+  animation-name: closeRight;
+  transform: translateX(0%);
+}
+
+.Door-close > .Door-left {
+  animation: none 0.9s ease-out;
+  animation-name: closeLeft;
+  transform: translateX(0%);
+}
+
+@keyframes openRight {
+  from {
+    transform: translateX(0%);
+  }
+
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes openLeft {
+  from {
+    transform: translateX(0%);
+  }
+
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes closeRight {
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes closeLeft {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(0%);
+  }
+}

@@ -1,12 +1,15 @@
 import { FC } from "react";
+import "./index.css";
 
 import { useElevator } from "./hooks";
 import { ControlPanel } from "./parts/ControlPanel";
+import { Door } from "./parts/Door";
 
 export const Elevator: FC = () => {
   const { floorLabels, floorsToStop, currentFloor, isGoingUp, selectFloor, mode } = useElevator();
   return (
-    <>
+    <div className="Elevator">
+      <Door isOpen={mode === "open"} isClose={mode === "close"} />
       <ControlPanel
         floorLabels={floorLabels}
         floorsToStop={floorsToStop}
@@ -16,7 +19,6 @@ export const Elevator: FC = () => {
           selectFloor(floor, true);
         }}
       />
-      <div>{mode}</div>
-    </>
+    </div>
   );
 };
