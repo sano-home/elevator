@@ -4,14 +4,17 @@ import { useElevator } from "./hooks";
 import { ControlPanel } from "./parts/ControlPanel";
 
 export const Elevator: FC = () => {
-  const { numberOfFloors, currentFloor, isGoingUp, selectFloor, mode } = useElevator();
+  const { floorLabels, floorsToStop, currentFloor, isGoingUp, selectFloor, mode } = useElevator();
   return (
     <>
       <ControlPanel
-        numberOfFloors={numberOfFloors}
+        floorLabels={floorLabels}
+        floorsToStop={floorsToStop}
         currentFloor={currentFloor}
         isGoingUp={isGoingUp}
-        onClickFloor={selectFloor}
+        onClickFloor={(floor: number) => {
+          selectFloor(floor, true);
+        }}
       />
       <div>{mode}</div>
     </>
