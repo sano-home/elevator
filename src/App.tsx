@@ -1,11 +1,9 @@
-import { ControlPanel } from './components/ControlPanel';
+import { Elevator } from "./components/Elevator";
 
 function App() {
-  const NUMBER_OF_FLOORS = 10;
-
   return (
     <div className="App">
-      <ControlPanel numberOfFloors={NUMBER_OF_FLOORS} currentFloor={1} isGoingUp={true} />
+      <Elevator />
     </div>
   );
 }
