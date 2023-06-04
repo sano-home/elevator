@@ -1,5 +1,6 @@
 {
   "name": "elevator",
+  "homepage": "https://sano-home.github.io/elevator/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
