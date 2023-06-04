@@ -28,7 +28,7 @@
     "eslint": "eslint --ext .ts,.tsx ./",
     "format": "prettier --write ./src/**/*.{ts,tsx,js,jsx,json,css,scss,md}",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -b gh-pages -d build"
+    "deploy": "gh-pages -b prod -d build"
   },
   "eslintConfig": {
     "extends": [
