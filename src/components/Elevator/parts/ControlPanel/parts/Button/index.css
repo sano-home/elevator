@@ -1,0 +1,19 @@
+.Button {
+  width: 80px;
+  height: 80px;
+  font-size: 48px;
+  border: none;
+  border-radius: 16px;
+  background-color: #fff;
+  color: #000;
+  font-family: inherit;
+}
+
+.Icon-space {
+  display: inline-block;
+  width: 8px;
+}
+
+.Button-selected {
+  background: #f1e44b;
+}

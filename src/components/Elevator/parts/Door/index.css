@@ -1,23 +1,23 @@
 .Door {
-  width: 400px;
+  width: 60%;
   height: 800px;
   display: flex;
   overflow: hidden;
   border: 8px solid #ccc;
-  border-radius: 8px;
+  border-radius: 32px 32px 0 0;
 }
 
 .Door-left {
   width: 50%;
   height: 100%;
-  background-color: blue;
+  background-color: #1f4860;
   border: 1px solid #ccc;
 }
 
 .Door-right {
   width: 50%;
   height: 100%;
-  background-color: blue;
+  background-color: #1f4860;
   border: 1px solid #ccc;
 }
 

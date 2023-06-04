@@ -1,5 +1,8 @@
 import { FC } from "react";
+
 import "./index.css";
+import { ButtonClose, ButtonFloor, ButtonOpen } from "./parts/Button";
+import { Display } from "./parts/Display";
 
 export const ControlPanel: FC<{
   floorLabels: number[];
@@ -9,22 +12,19 @@ export const ControlPanel: FC<{
   onClickFloor: (floor: number) => void;
 }> = ({ floorLabels, floorsToStop, currentFloor, isGoingUp, onClickFloor }) => {
   return (
-    <div className="Container">
-      <div className="Display">
-        {isGoingUp ? "↑" : "↓"}
-        {currentFloor}
-      </div>
+    <div className="Control-panel">
+      <Display currentFloor={currentFloor} isGoingUp={isGoingUp} />
       <div className="Controller">
-        <button className="Button">閉</button>
-        <button className="Button">開</button>
+        <ButtonOpen />
+        <ButtonClose />
         {floorLabels.map((floor) => (
-          <button
+          <ButtonFloor
             key={floor}
             onClick={() => onClickFloor(floor)}
-            className={floorsToStop[floor - 1] ? "Button Button-selected" : "Button"}
+            selected={floorsToStop[floor - 1]}
           >
             {floor}
-          </button>
+          </ButtonFloor>
         ))}
       </div>
     </div>
