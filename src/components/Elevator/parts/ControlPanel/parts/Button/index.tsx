@@ -6,7 +6,7 @@ import "./index.css";
 
 export const ButtonOpen: FC<ButtonHTMLAttributes<HTMLButtonElement>> = ({ ...props }) => {
   return (
-    <button className="Button Button-open" {...props}>
+    <button className="Button Button-open" type="button" {...props}>
       <FontAwesomeIcon icon={faCaretLeft} />
       <FontAwesomeIcon icon={faCaretRight} />
     </button>
@@ -15,7 +15,7 @@ export const ButtonOpen: FC<ButtonHTMLAttributes<HTMLButtonElement>> = ({ ...pro
 
 export const ButtonClose: FC<ButtonHTMLAttributes<HTMLButtonElement>> = ({ ...props }) => {
   return (
-    <button className="Button Button-close" {...props}>
+    <button className="Button Button-close" type="button" {...props}>
       <FontAwesomeIcon icon={faCaretRight} />
       <span className="Icon-space" />
       <FontAwesomeIcon icon={faCaretLeft} />
@@ -28,5 +28,7 @@ interface ButtonFloorProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 export const ButtonFloor: FC<ButtonFloorProps> = ({ selected, ...props }) => {
-  return <button className={selected ? "Button Button-selected" : "Button"} {...props} />;
+  return (
+    <button type="button" className={selected ? "Button Button-selected" : "Button"} {...props} />
+  );
 };
