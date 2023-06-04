@@ -135,10 +135,10 @@ export const useElevator = () => {
       const timerId = setTimeout(() => {
         setMode("close");
       }, SEC_KEEP_OPEN * 1000);
-      console.log("setTimeout Open", timerId);
+      // console.log("setTimeout Open", timerId);
 
       return () => {
-        console.log("clearTimeout Open", timerId, mode);
+        // console.log("clearTimeout Open", timerId, mode);
         clearTimeout(timerId);
       };
     } else if (mode === "close") {
@@ -147,14 +147,12 @@ export const useElevator = () => {
         setMode("idle");
       }, SEC_CLOSE * 1000);
 
-      console.log("setTimeout Close", timerId);
+      // console.log("setTimeout Close", timerId);
 
       return () => {
-        console.log("clearTimeout Close", timerId, mode);
+        // console.log("clearTimeout Close", timerId, mode);
         clearTimeout(timerId);
       };
-    } else if (mode === "keepOpen") {
-      console.log("keepOpen");
     }
   }, [currentFloor, destinationFloor, isGoingUp, mode, nextFloor, floorsToStop, selectFloor]);
 
