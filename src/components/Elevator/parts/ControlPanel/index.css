@@ -2,22 +2,12 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-  width: 200px;
+  width: 240px;
+  min-width: 240px;
   font-family: "Lexend Giga", sans-serif;
 }
 
-.Display {
-  width: 200px;
-  height: 100px;
-  border: 8px solid #ccc;
-  border-radius: 24px;
-  background-color: #000;
-  color: #f1e44b;
-  font-size: 80px;
-}
-
 .Controller {
-  width: 168px;
   display: flex;
   flex-wrap: wrap;
   flex-flow: wrap-reverse;
@@ -27,19 +17,4 @@
   border: 8px solid #ccc;
   border-radius: 24px;
   background-color: #333;
-}
-
-.Button {
-  width: 80px;
-  height: 80px;
-  font-size: 48px;
-  border: none;
-  border-radius: 16px;
-  background-color: #fff;
-  color: #000;
-  font-family: inherit;
-}
-
-.Button-selected {
-  background: #f1e44b;
 }
