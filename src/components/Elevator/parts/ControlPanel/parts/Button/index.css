@@ -7,8 +7,14 @@
   background-color: #fff;
   color: #000;
   font-family: inherit;
+  appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
+  font-size-adjust: none;
+  -webkit-text-size-adjust: unset;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
 }
 
 .Button-open:active,
