@@ -9,6 +9,11 @@
   font-family: inherit;
 }
 
+.Button-open:active,
+.Button-close:active {
+  background-color: #f1e44b;
+}
+
 .Icon-space {
   display: inline-block;
   width: 8px;

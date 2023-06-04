@@ -10,13 +10,43 @@ export const ControlPanel: FC<{
   currentFloor: number;
   isGoingUp: boolean;
   onClickFloor: (floor: number) => void;
-}> = ({ floorLabels, floorsToStop, currentFloor, isGoingUp, onClickFloor }) => {
+  keepDoorOpen: (keepOpen: boolean) => void;
+  closeDoor: () => void;
+}> = ({
+  floorLabels,
+  floorsToStop,
+  currentFloor,
+  isGoingUp,
+  onClickFloor,
+  keepDoorOpen,
+  closeDoor,
+}) => {
   return (
     <div className="Control-panel">
       <Display currentFloor={currentFloor} isGoingUp={isGoingUp} />
       <div className="Controller">
-        <ButtonOpen />
-        <ButtonClose />
+        <ButtonOpen
+          onMouseDown={() => {
+            keepDoorOpen(true);
+          }}
+          onTouchStart={() => {
+            keepDoorOpen(true);
+          }}
+          onMouseUp={() => {
+            keepDoorOpen(false);
+          }}
+          onTouchEnd={() => {
+            keepDoorOpen(false);
+          }}
+        />
+        <ButtonClose
+          onMouseDown={() => {
+            closeDoor();
+          }}
+          onTouchStart={() => {
+            closeDoor();
+          }}
+        />
         {floorLabels.map((floor) => (
           <ButtonFloor
             key={floor}

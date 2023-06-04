@@ -6,9 +6,13 @@ const SEC_PER_FLOOR = 1;
 const SEC_KEEP_OPEN = 3;
 const SEC_CLOSE = 1;
 
-type MODE = "open" | "close" | "idle" | "moving";
+type MODE = "keepOpen" | "open" | "close" | "idle" | "moving";
 
-const findDestinationFloor = (currentFloor: number, isGoingUp: boolean, floorsToStop: boolean[]): number => {
+const findDestinationFloor = (
+  currentFloor: number,
+  isGoingUp: boolean,
+  floorsToStop: boolean[]
+): number => {
   // currentFloorから進行方向で一番近い階を探す
   if (isGoingUp) {
     // currentFloorより上の階から探す
@@ -37,10 +41,12 @@ export const useElevator = () => {
   const [isGoingUp, setIsGoingUp] = useState(true);
   const [mode, setMode] = useState<MODE>("idle");
 
-  // each floor has flag to stop
-  const [floorsToStop, setFloorsToStop] = useState<boolean[]>(Array.from(Array(NUMBER_OF_FLOORS), (_) => false));
+  // 各階の停止フラグ(true:停止する, false:停止しない)
+  const [floorsToStop, setFloorsToStop] = useState<boolean[]>(
+    Array.from(Array(NUMBER_OF_FLOORS), (_) => false)
+  );
 
-  // create array of floor numbers start from 1
+  // 階のラベル（1からスタート）
   const floorLabels = Array.from(Array(NUMBER_OF_FLOORS), (_, i) => i + 1);
 
   const selectFloor = useCallback(
@@ -56,8 +62,6 @@ export const useElevator = () => {
         console.log(floorLabel, "is already", isOn);
         return;
       }
-
-      // TODO: 次の階に移動中に次の階を選択した場合もreturn
 
       const newValue = [...floorsToStop];
       newValue[floor] = isOn;
@@ -77,6 +81,27 @@ export const useElevator = () => {
     [currentFloor, floorLabels, floorsToStop, isGoingUp]
   );
 
+  const keepDoorOpen = useCallback(
+    (keepOpen: boolean) => {
+      if (mode === "moving") {
+        return;
+      }
+
+      if (keepOpen) {
+        setMode("keepOpen");
+      } else {
+        setMode("open");
+      }
+    },
+    [mode]
+  );
+
+  const closeDoor = useCallback(() => {
+    if (mode === "open" || mode === "keepOpen") {
+      setMode("close");
+    }
+  }, [mode]);
+
   useEffect(() => {
     const hasDestination = floorsToStop.some((value) => value === true);
     if (mode === "idle" && hasDestination) {
@@ -87,7 +112,7 @@ export const useElevator = () => {
         // 到着
         selectFloor(destinationFloor, false);
 
-        // 到着したら1秒後にopenに切り替える
+        // 到着したらopenに切り替える
         setMode("open");
       } else {
         // 出発
@@ -110,10 +135,10 @@ export const useElevator = () => {
       const timerId = setTimeout(() => {
         setMode("close");
       }, SEC_KEEP_OPEN * 1000);
-      // console.log("setTimeout Open", timerId);
+      console.log("setTimeout Open", timerId);
 
       return () => {
-        // console.log("clearTimeout Open", timerId);
+        console.log("clearTimeout Open", timerId, mode);
         clearTimeout(timerId);
       };
     } else if (mode === "close") {
@@ -122,12 +147,14 @@ export const useElevator = () => {
         setMode("idle");
       }, SEC_CLOSE * 1000);
 
-      // console.log("setTimeout Close", timerId);
+      console.log("setTimeout Close", timerId);
 
       return () => {
-        // console.log("clearTimeout Close", timerId);
+        console.log("clearTimeout Close", timerId, mode);
         clearTimeout(timerId);
       };
+    } else if (mode === "keepOpen") {
+      console.log("keepOpen");
     }
   }, [currentFloor, destinationFloor, isGoingUp, mode, nextFloor, floorsToStop, selectFloor]);
 
@@ -139,5 +166,7 @@ export const useElevator = () => {
     setMode,
     selectFloor,
     mode,
+    keepDoorOpen,
+    closeDoor,
   };
 };
