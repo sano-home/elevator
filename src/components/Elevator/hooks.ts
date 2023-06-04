@@ -52,14 +52,14 @@ export const useElevator = () => {
   const selectFloor = useCallback(
     (floorLabel: number, isOn: boolean) => {
       const floor = floorLabels.indexOf(floorLabel);
-      console.log("selectFloor", floorLabel, isOn);
+      // console.log("selectFloor", floorLabel, isOn);
 
       if (floorLabel === currentFloor && isOn) {
         return;
       }
 
       if (floorsToStop[floor] === isOn) {
-        console.log(floorLabel, "is already", isOn);
+        // console.log(floorLabel, "is already", isOn);
         return;
       }
 
@@ -69,7 +69,7 @@ export const useElevator = () => {
 
       // 現在の階から進行方向で一番近い階を探す
       let destination = findDestinationFloor(currentFloor, isGoingUp, newValue);
-      console.log("destination", destination);
+      // console.log("destination", destination);
 
       if (destination === -1) {
         destination = findDestinationFloor(currentFloor, !isGoingUp, newValue);
