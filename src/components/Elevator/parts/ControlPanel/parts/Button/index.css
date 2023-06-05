@@ -1,20 +1,13 @@
 .Button {
+  padding: 0; /* 無いとiOSで崩れる */
   width: 80px;
   height: 80px;
-  font-size: 48px;
+  font-size: 40px;
   border: none;
   border-radius: 16px;
   background-color: #fff;
   color: #000;
   font-family: inherit;
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  font-size-adjust: none;
-  -webkit-text-size-adjust: unset;
-  box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
 }
 
 .Button-open:active,
