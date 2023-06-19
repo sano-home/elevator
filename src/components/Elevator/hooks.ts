@@ -130,7 +130,11 @@ export const useElevator = () => {
           clearTimeout(timerId);
         };
       }
-    } else if (mode === "open") {
+    }
+  }, [currentFloor, destinationFloor, isGoingUp, mode, nextFloor, floorsToStop, selectFloor]);
+
+  useEffect(() => {
+    if (mode === "open") {
       // ドアが開く
       const timerId = setTimeout(() => {
         setMode("close");
@@ -154,7 +158,7 @@ export const useElevator = () => {
         clearTimeout(timerId);
       };
     }
-  }, [currentFloor, destinationFloor, isGoingUp, mode, nextFloor, floorsToStop, selectFloor]);
+  }, [mode]);
 
   return {
     floorLabels,
