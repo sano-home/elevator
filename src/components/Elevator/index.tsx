@@ -25,9 +25,7 @@ export const Elevator: FC = () => {
         floorsToStop={floorsToStop}
         currentFloor={currentFloor}
         isGoingUp={isGoingUp}
-        onClickFloor={(floor: number) => {
-          selectFloor(floor, true);
-        }}
+        onClickFloor={selectFloor}
         keepDoorOpen={keepDoorOpen}
         closeDoor={closeDoor}
       />

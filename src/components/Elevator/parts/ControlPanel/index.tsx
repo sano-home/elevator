@@ -27,27 +27,12 @@ export const ControlPanel: FC<{
       <Display currentFloor={currentFloor} isGoingUp={isGoingUp} />
       <div className="Controller">
         <ButtonOpen
-          onMouseDown={() => {
-            keepDoorOpen(true);
-          }}
-          onTouchStart={() => {
-            keepDoorOpen(true);
-          }}
-          onMouseUp={() => {
-            keepDoorOpen(false);
-          }}
-          onTouchEnd={() => {
-            keepDoorOpen(false);
-          }}
+          onPointerDown={() => keepDoorOpen(true)}
+          onPointerUp={() => keepDoorOpen(false)}
+          onPointerLeave={() => keepDoorOpen(false)}
+          onPointerCancel={() => keepDoorOpen(false)}
         />
-        <ButtonClose
-          onMouseDown={() => {
-            closeDoor();
-          }}
-          onTouchStart={() => {
-            closeDoor();
-          }}
-        />
+        <ButtonClose onPointerDown={closeDoor} />
         {floorLabels.map((floor) => (
           <ButtonFloor
             key={floor}
