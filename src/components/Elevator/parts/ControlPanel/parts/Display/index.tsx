@@ -1,6 +1,6 @@
 import { faArrowUp, faArrowDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { FC } from "react";
+import type { FC } from "react";
 import "./index.css";
 
 export const Display: FC<{
