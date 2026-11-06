@@ -1,6 +1,7 @@
+import "./index.css";
+
 import type { FC } from "react";
 
-import "./index.css";
 import { ButtonClose, ButtonFloor, ButtonOpen } from "./parts/Button";
 import { Display } from "./parts/Display";
 

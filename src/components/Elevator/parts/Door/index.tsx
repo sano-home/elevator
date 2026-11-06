@@ -1,5 +1,6 @@
-import type { FC } from "react";
 import "./index.css";
+
+import type { FC } from "react";
 
 export const Door: FC<{
   isOpen: boolean;

@@ -13,23 +13,32 @@
   "scripts": {
     "start": "vite",
     "build": "tsc && vite build",
-    "eslint": "eslint --ext .ts,.tsx ./",
-    "format": "prettier --write ./src/**/*.{ts,tsx,js,jsx,json,css,scss,md}",
+    "eslint": "eslint .",
+    "format": "prettier --write .",
     "predeploy": "npm run build",
     "deploy": "gh-pages -b deploy -d build",
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@types/node": "^26.6.6",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.2.1",
-    "eslint": "^8.57.1",
+    "eslint": "^10.14.0",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-config-react-app": "^7.0.1",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.7",
+    "eslint-plugin-simple-import-sort": "^14.0.0",
     "gh-pages": "^6.3.0",
-    "prettier": "^2.8.8",
+    "globals": "^17.14.0",
+    "prettier": "^3.9.10",
     "typescript": "^6.0.3",
+    "typescript-eslint": "^8.72.1",
     "vite": "^8.3.6"
+  },
+  "type": "module",
+  "overrides": {
+    "minimatch": "^11.0.5"
   }
 }

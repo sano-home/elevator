@@ -1,5 +1,6 @@
-import type { FC } from "react";
 import "./index.css";
+
+import type { FC } from "react";
 
 import { useElevator } from "./hooks";
 import { ControlPanel } from "./parts/ControlPanel";

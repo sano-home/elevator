@@ -1,4 +1,3 @@
-/* eslint-disable no-debugger */
 import { useCallback, useEffect, useState } from "react";
 
 const NUMBER_OF_FLOORS = 10;
