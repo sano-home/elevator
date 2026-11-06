@@ -1,5 +1,6 @@
-import { FC } from "react";
 import "./index.css";
+
+import type { FC } from "react";
 
 import { useElevator } from "./hooks";
 import { ControlPanel } from "./parts/ControlPanel";
@@ -24,9 +25,7 @@ export const Elevator: FC = () => {
         floorsToStop={floorsToStop}
         currentFloor={currentFloor}
         isGoingUp={isGoingUp}
-        onClickFloor={(floor: number) => {
-          selectFloor(floor, true);
-        }}
+        onClickFloor={selectFloor}
         keepDoorOpen={keepDoorOpen}
         closeDoor={closeDoor}
       />

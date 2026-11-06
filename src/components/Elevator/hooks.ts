@@ -1,173 +1,164 @@
-/* eslint-disable no-debugger */
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useReducer } from "react";
 
 const NUMBER_OF_FLOORS = 10;
 const SEC_PER_FLOOR = 1;
 const SEC_KEEP_OPEN = 3;
 const SEC_CLOSE = 1;
 
-type MODE = "keepOpen" | "open" | "close" | "idle" | "moving";
+// 階のラベル（1からスタート）
+const FLOOR_LABELS = Array.from({ length: NUMBER_OF_FLOORS }, (_, i) => i + 1);
 
+export type Mode = "keepOpen" | "open" | "close" | "idle" | "moving";
+
+type State = {
+  currentFloor: number;
+  isGoingUp: boolean;
+  mode: Mode;
+  // 各階の停止フラグ(true:停止する, false:停止しない)
+  floorsToStop: boolean[];
+};
+
+type Action =
+  | { type: "selectFloor"; floor: number }
+  | { type: "step" }
+  | { type: "keepDoorOpen"; keepOpen: boolean }
+  | { type: "closeDoor" }
+  | { type: "doorTimeout" };
+
+const initialState: State = {
+  currentFloor: 1,
+  isGoingUp: true,
+  mode: "idle",
+  floorsToStop: Array.from({ length: NUMBER_OF_FLOORS }, () => false),
+};
+
+// currentFloorから進行方向で一番近い停止階を探す（なければ -1）
 const findDestinationFloor = (
   currentFloor: number,
   isGoingUp: boolean,
   floorsToStop: boolean[]
 ): number => {
-  // currentFloorから進行方向で一番近い階を探す
   if (isGoingUp) {
-    // currentFloorより上の階から探す
-    const floors = floorsToStop.slice(currentFloor - 1);
-    const index = floors.indexOf(true);
-    if (index === -1) {
-      return -1;
+    const index = floorsToStop.indexOf(true, currentFloor - 1);
+    return index === -1 ? -1 : index + 1;
+  }
+  const index = floorsToStop.lastIndexOf(true, currentFloor - 2);
+  return currentFloor < 2 || index === -1 ? -1 : index + 1;
+};
+
+// 進行方向に停止階がなければ方向を反転する
+const resolveDirection = (
+  currentFloor: number,
+  isGoingUp: boolean,
+  floorsToStop: boolean[]
+): boolean =>
+  findDestinationFloor(currentFloor, isGoingUp, floorsToStop) === -1 ? !isGoingUp : isGoingUp;
+
+const hasDestination = (floorsToStop: boolean[]) => floorsToStop.includes(true);
+
+const setStop = (floorsToStop: boolean[], floor: number, value: boolean) =>
+  floorsToStop.map((v, i) => (i === floor - 1 ? value : v));
+
+const reducer = (state: State, action: Action): State => {
+  switch (action.type) {
+    case "selectFloor": {
+      const index = action.floor - 1;
+      if (action.floor === state.currentFloor || state.floorsToStop[index]) {
+        return state;
+      }
+      const floorsToStop = setStop(state.floorsToStop, action.floor, true);
+      return {
+        ...state,
+        floorsToStop,
+        isGoingUp: resolveDirection(state.currentFloor, state.isGoingUp, floorsToStop),
+        // 停止中なら出発
+        mode: state.mode === "idle" ? "moving" : state.mode,
+      };
     }
-    return index + currentFloor;
-  } else {
-    // currentFloorより下の階から探す
-    const floors = floorsToStop.slice(0, currentFloor - 1).reverse();
-    const index = floors.indexOf(true);
-    if (index === -1) {
-      return -1;
+
+    case "step": {
+      if (state.mode !== "moving") {
+        return state;
+      }
+      const destination = findDestinationFloor(
+        state.currentFloor,
+        state.isGoingUp,
+        state.floorsToStop
+      );
+      if (destination === -1) {
+        return { ...state, mode: "idle" };
+      }
+      const currentFloor = state.currentFloor + (state.isGoingUp ? 1 : -1);
+      if (currentFloor !== destination) {
+        return { ...state, currentFloor };
+      }
+      // 到着したらドアを開ける
+      const floorsToStop = setStop(state.floorsToStop, destination, false);
+      return {
+        currentFloor,
+        floorsToStop,
+        isGoingUp: resolveDirection(currentFloor, state.isGoingUp, floorsToStop),
+        mode: "open",
+      };
     }
-    return currentFloor - index - 1;
+
+    case "keepDoorOpen":
+      if (action.keepOpen) {
+        return state.mode === "moving" ? state : { ...state, mode: "keepOpen" };
+      }
+      return state.mode === "keepOpen" ? { ...state, mode: "open" } : state;
+
+    case "closeDoor":
+      return state.mode === "open" || state.mode === "keepOpen"
+        ? { ...state, mode: "close" }
+        : state;
+
+    case "doorTimeout":
+      if (state.mode === "open") {
+        return { ...state, mode: "close" };
+      }
+      if (state.mode === "close") {
+        // 停止階が残っていれば出発
+        return { ...state, mode: hasDestination(state.floorsToStop) ? "moving" : "idle" };
+      }
+      return state;
   }
 };
 
+const TIMER_SEC: Partial<Record<Mode, number>> = {
+  moving: SEC_PER_FLOOR,
+  open: SEC_KEEP_OPEN,
+  close: SEC_CLOSE,
+};
+
 export const useElevator = () => {
-  const [currentFloor, setCurrentFloor] = useState(1);
-  const [nextFloor, setNextFloor] = useState(0);
-  const [destinationFloor, setDestinationFloor] = useState(0);
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const { mode, currentFloor } = state;
 
-  const [isGoingUp, setIsGoingUp] = useState(true);
-  const [mode, setMode] = useState<MODE>("idle");
+  // 移動中は1階ごと、ドアは開閉状態ごとにタイマーを張る。
+  // 階の選択では張り直さない（依存は mode と currentFloor のみ）。
+  useEffect(() => {
+    const sec = TIMER_SEC[mode];
+    if (sec === undefined) {
+      return;
+    }
+    const timerId = setTimeout(() => {
+      dispatch(mode === "moving" ? { type: "step" } : { type: "doorTimeout" });
+    }, sec * 1000);
+    return () => clearTimeout(timerId);
+  }, [mode, currentFloor]);
 
-  // 各階の停止フラグ(true:停止する, false:停止しない)
-  const [floorsToStop, setFloorsToStop] = useState<boolean[]>(
-    Array.from(Array(NUMBER_OF_FLOORS), (_) => false)
-  );
-
-  // 階のラベル（1からスタート）
-  const floorLabels = Array.from(Array(NUMBER_OF_FLOORS), (_, i) => i + 1);
-
-  const selectFloor = useCallback(
-    (floorLabel: number, isOn: boolean) => {
-      const floor = floorLabels.indexOf(floorLabel);
-      // console.log("selectFloor", floorLabel, isOn);
-
-      if (floorLabel === currentFloor && isOn) {
-        return;
-      }
-
-      if (floorsToStop[floor] === isOn) {
-        // console.log(floorLabel, "is already", isOn);
-        return;
-      }
-
-      const newValue = [...floorsToStop];
-      newValue[floor] = isOn;
-      setFloorsToStop(newValue);
-
-      // 現在の階から進行方向で一番近い階を探す
-      let destination = findDestinationFloor(currentFloor, isGoingUp, newValue);
-      // console.log("destination", destination);
-
-      if (destination === -1) {
-        destination = findDestinationFloor(currentFloor, !isGoingUp, newValue);
-        setIsGoingUp(!isGoingUp);
-      }
-
-      setDestinationFloor(destination);
-    },
-    [currentFloor, floorLabels, floorsToStop, isGoingUp]
-  );
-
+  const selectFloor = useCallback((floor: number) => dispatch({ type: "selectFloor", floor }), []);
   const keepDoorOpen = useCallback(
-    (keepOpen: boolean) => {
-      if (mode === "moving") {
-        return;
-      }
-
-      if (keepOpen) {
-        setMode("keepOpen");
-      } else {
-        setMode("open");
-      }
-    },
-    [mode]
+    (keepOpen: boolean) => dispatch({ type: "keepDoorOpen", keepOpen }),
+    []
   );
-
-  const closeDoor = useCallback(() => {
-    if (mode === "open" || mode === "keepOpen") {
-      setMode("close");
-    }
-  }, [mode]);
-
-  useEffect(() => {
-    const hasDestination = floorsToStop.some((value) => value === true);
-    if (mode === "idle" && hasDestination) {
-      // 出発
-      setMode("moving");
-    } else if (mode === "moving") {
-      if (currentFloor === destinationFloor) {
-        // 到着
-        selectFloor(destinationFloor, false);
-
-        // 到着したらopenに切り替える
-        setMode("open");
-      } else {
-        // 出発
-        const isUp = currentFloor < destinationFloor;
-        setIsGoingUp(isUp);
-        setNextFloor(isUp ? currentFloor + 1 : currentFloor - 1);
-
-        const timerId = setTimeout(() => {
-          setCurrentFloor(nextFloor);
-        }, SEC_PER_FLOOR * 1000);
-        // console.log("setTimeout", timerId);
-
-        return () => {
-          // console.log("clearTimeout", timerId);
-          clearTimeout(timerId);
-        };
-      }
-    }
-  }, [currentFloor, destinationFloor, isGoingUp, mode, nextFloor, floorsToStop, selectFloor]);
-
-  useEffect(() => {
-    if (mode === "open") {
-      // ドアが開く
-      const timerId = setTimeout(() => {
-        setMode("close");
-      }, SEC_KEEP_OPEN * 1000);
-      // console.log("setTimeout Open", timerId);
-
-      return () => {
-        // console.log("clearTimeout Open", timerId, mode);
-        clearTimeout(timerId);
-      };
-    } else if (mode === "close") {
-      // ドアが閉まる
-      const timerId = setTimeout(() => {
-        setMode("idle");
-      }, SEC_CLOSE * 1000);
-
-      // console.log("setTimeout Close", timerId);
-
-      return () => {
-        // console.log("clearTimeout Close", timerId, mode);
-        clearTimeout(timerId);
-      };
-    }
-  }, [mode]);
+  const closeDoor = useCallback(() => dispatch({ type: "closeDoor" }), []);
 
   return {
-    floorLabels,
-    floorsToStop,
-    currentFloor,
-    isGoingUp,
-    setMode,
+    ...state,
+    floorLabels: FLOOR_LABELS,
     selectFloor,
-    mode,
     keepDoorOpen,
     closeDoor,
   };

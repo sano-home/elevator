@@ -1,6 +1,7 @@
-import { FC } from "react";
-
 import "./index.css";
+
+import type { FC } from "react";
+
 import { ButtonClose, ButtonFloor, ButtonOpen } from "./parts/Button";
 import { Display } from "./parts/Display";
 
@@ -26,27 +27,12 @@ export const ControlPanel: FC<{
       <Display currentFloor={currentFloor} isGoingUp={isGoingUp} />
       <div className="Controller">
         <ButtonOpen
-          onMouseDown={() => {
-            keepDoorOpen(true);
-          }}
-          onTouchStart={() => {
-            keepDoorOpen(true);
-          }}
-          onMouseUp={() => {
-            keepDoorOpen(false);
-          }}
-          onTouchEnd={() => {
-            keepDoorOpen(false);
-          }}
+          onPointerDown={() => keepDoorOpen(true)}
+          onPointerUp={() => keepDoorOpen(false)}
+          onPointerLeave={() => keepDoorOpen(false)}
+          onPointerCancel={() => keepDoorOpen(false)}
         />
-        <ButtonClose
-          onMouseDown={() => {
-            closeDoor();
-          }}
-          onTouchStart={() => {
-            closeDoor();
-          }}
-        />
+        <ButtonClose onPointerDown={closeDoor} />
         {floorLabels.map((floor) => (
           <ButtonFloor
             key={floor}

@@ -1,8 +1,8 @@
+import "./index.css";
+
 import { faCaretLeft, faCaretRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ButtonHTMLAttributes, FC } from "react";
-
-import "./index.css";
+import type { ButtonHTMLAttributes, FC } from "react";
 
 export const ButtonOpen: FC<ButtonHTMLAttributes<HTMLButtonElement>> = ({ ...props }) => {
   return (
