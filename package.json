@@ -7,14 +7,8 @@
     "@fortawesome/fontawesome-svg-core": "^7.3.1",
     "@fortawesome/free-solid-svg-icons": "^7.3.1",
     "@fortawesome/react-fontawesome": "^3.5.0",
-    "@types/node": "^26.6.6",
-    "@types/react": "^18.2.8",
-    "@types/react-dom": "^18.2.4",
-    "gh-pages": "^6.3.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "typescript": "^5.9.3",
-    "web-vitals": "^2.1.4"
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
   },
   "scripts": {
     "start": "vite",
@@ -26,11 +20,16 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@types/node": "^26.6.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.2.1",
     "eslint": "^8.57.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-config-react-app": "^7.0.1",
+    "gh-pages": "^6.3.0",
     "prettier": "^2.8.8",
+    "typescript": "^5.9.3",
     "vite": "^8.3.6"
   }
 }
