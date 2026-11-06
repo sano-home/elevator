@@ -12,8 +12,14 @@ This project uses [Vite](https://vite.dev/). Node.js version is specified in `.n
 
 ```sh
 npm install
-npm start        # start the dev server
-npm run build    # type-check and build into ./build
-npm run preview  # preview the production build locally
-npm run deploy   # build and publish ./build to the `deploy` branch
+npm start          # start the dev server
+npm test           # run tests (Vitest)
+npm run typecheck  # type-check with tsc
+npm run eslint     # lint
+npm run format     # format with Prettier
+npm run build      # type-check and build into ./build
+npm run preview    # preview the production build locally
+npm run deploy     # build and publish ./build to the `deploy` branch
 ```
+
+CI (GitHub Actions) runs type-check, lint, format check, tests and build on every pull request.
