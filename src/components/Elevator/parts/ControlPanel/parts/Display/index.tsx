@@ -11,7 +11,7 @@ export const Display: FC<{
     <div className="Display">
       <div className="Display-inner">
         <div className="Arrow">
-          <FontAwesomeIcon icon={isGoingUp ? faArrowUp : faArrowDown} />
+          <FontAwesomeIcon icon={isGoingUp ? faArrowUp : faArrowDown} widthAuto />
         </div>
         <span className="Current-floor">{currentFloor}</span>
       </div>

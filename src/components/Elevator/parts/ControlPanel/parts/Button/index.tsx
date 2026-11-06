@@ -7,8 +7,8 @@ import "./index.css";
 export const ButtonOpen: FC<ButtonHTMLAttributes<HTMLButtonElement>> = ({ ...props }) => {
   return (
     <button className="Button Button-open" type="button" {...props}>
-      <FontAwesomeIcon icon={faCaretLeft} />
-      <FontAwesomeIcon icon={faCaretRight} />
+      <FontAwesomeIcon icon={faCaretLeft} widthAuto />
+      <FontAwesomeIcon icon={faCaretRight} widthAuto />
     </button>
   );
 };
@@ -16,9 +16,9 @@ export const ButtonOpen: FC<ButtonHTMLAttributes<HTMLButtonElement>> = ({ ...pro
 export const ButtonClose: FC<ButtonHTMLAttributes<HTMLButtonElement>> = ({ ...props }) => {
   return (
     <button className="Button Button-close" type="button" {...props}>
-      <FontAwesomeIcon icon={faCaretRight} />
+      <FontAwesomeIcon icon={faCaretRight} widthAuto />
       <span className="Icon-space" />
-      <FontAwesomeIcon icon={faCaretLeft} />
+      <FontAwesomeIcon icon={faCaretLeft} widthAuto />
     </button>
   );
 };
