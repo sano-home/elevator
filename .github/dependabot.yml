@@ -1,10 +1,18 @@
 version: 2
 updates:
+  # Version updates: minor and patch only. Major updates are ignored.
+  # Security updates are still created regardless of update-types.
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "weekly"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
