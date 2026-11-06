@@ -22,6 +22,11 @@ npm run preview    # preview the production build locally
 npm run deploy     # build and publish ./build to the `deploy` branch (GitHub Pages)
 ```
 
+TypeScript 7 does not ship the JavaScript API yet, so two versions are installed side by side
+via npm aliases, as recommended in the TypeScript 7.0 release notes:
+`@typescript/native` (TypeScript 7, provides `tsc`) and `typescript` (`@typescript/typescript6`,
+the 6.0 API used by typescript-eslint and other tools).
+
 CI (GitHub Actions) runs type-check, lint, format check, tests and build on every pull request.
 Pushes to `main` are deployed automatically once these checks pass: the build is published to the
 `deploy` branch, which GitHub Pages serves. `npm run deploy` publishes to the same branch from your machine.
