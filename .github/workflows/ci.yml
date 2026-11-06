@@ -52,7 +52,13 @@ jobs:
         with:
           name: build
           path: build
-      - run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          npx gh-pages -b deploy -d build -m "Deploy ${{ github.sha }}"
+      # gh-pages clones the repo into its own cache directory, which does not
+      # inherit the credentials persisted by actions/checkout, so pass the
+      # token in the repository URL. -x hides the URL from the output.
+      - env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          npx gh-pages -b deploy -d build -x \
+            -m "Deploy ${{ github.sha }}" \
+            -u "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>" \
+            -r "https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git"
