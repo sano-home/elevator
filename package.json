@@ -7,51 +7,30 @@
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^27.5.2",
-    "@types/node": "^16.18.34",
+    "@types/node": "^22.20.5",
     "@types/react": "^18.2.8",
     "@types/react-dom": "^18.2.4",
     "gh-pages": "^5.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "start": "vite",
+    "build": "tsc && vite build",
     "eslint": "eslint --ext .ts,.tsx ./",
     "format": "prettier --write ./src/**/*.{ts,tsx,js,jsx,json,css,scss,md}",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -b deploy -d build"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest",
-      "prettier"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "deploy": "gh-pages -b deploy -d build",
+    "preview": "vite preview"
   },
   "devDependencies": {
+    "@vitejs/plugin-react": "^6.2.1",
+    "eslint": "^8.57.1",
     "eslint-config-prettier": "^8.8.0",
-    "prettier": "^2.8.8"
+    "eslint-config-react-app": "^7.0.1",
+    "prettier": "^2.8.8",
+    "vite": "^8.3.6"
   }
 }
