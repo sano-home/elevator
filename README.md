@@ -19,7 +19,7 @@ npm run eslint     # lint
 npm run format     # format with Prettier
 npm run build      # type-check and build into ./build
 npm run preview    # preview the production build locally
-npm run deploy     # build and publish ./build to the `deploy` branch
 ```
 
 CI (GitHub Actions) runs type-check, lint, format check, tests and build on every pull request.
+Pushes to `main` are deployed to GitHub Pages automatically once these checks pass.
